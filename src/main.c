@@ -21,8 +21,8 @@ int main(int argc, char *argv[])
                 cols=atoi(optarg);
                 break; 
             case 'i':  
-                printf("Count of iterations: %s\n", optarg);  
                 iterationsCount=atoi(optarg);
+                printf("Count of iterations: %d\n", iterationsCount);  
                 break; 
             case 'd':  
                 printf("Start direction: %s\n", optarg);
@@ -45,14 +45,15 @@ int main(int argc, char *argv[])
         }  
     }  
     LangtonField field = initializeField(rows,cols,blackCellsPercent,startDirection);
-    for (int i = 0; i < field.rows; i++)
+    
+    printField(&field);
+    printf("\n");
+
+    for (int i = 0; i < iterationsCount; i++)
     {
-        for (int j = 0; j < field.cols; j++)
-        {
-            printf("%d ",field.field[i][j]);
-        }
+        fieldIterate(&field);
+        printField(&field);
         printf("\n");
     }
-    
     return 0; 
 } 
