@@ -1,9 +1,74 @@
 #include "langtonAnt.h"
-
+#include <stdio.h>
 LangtonAnt initializeAnt(int xStartPosition,int yStartPosition,Direction direction){
     LangtonAnt ant;
-    ant.xPosition=xStartPosition;
-    ant.yPosition=yStartPosition;
+    ant.cords.x=xStartPosition;
+    ant.cords.y=yStartPosition;
     ant.direction=direction;
     return ant;
+}
+
+void antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
+    switch (color)
+    {
+        case Black:
+            ant->direction = ToLeftChangeDirection(ant->direction);
+            break;
+        case White:
+            ant->direction = ToRightChangeDirection(ant->direction);
+            break;
+    default:
+        break;
+    }
+    move(&(ant->cords),ant->direction);
+
+    if(ant->cords.x>xMax){
+        ant->cords.x=0;
+    }
+    else if(ant->cords.x<0){
+        ant->cords.x = xMax;
+    }
+    if(ant->cords.y>yMax){
+        ant->cords.y=0;
+    } else if(ant->cords.y<0){
+        ant->cords.y=yMax;
+    }
+    
+}
+Direction ToLeftChangeDirection(Direction currentDirection){
+    switch (currentDirection)
+    {
+        case Bottom:
+            return Left;
+            break;
+        case Left:
+            return Bottom;
+            break;
+        case Top:
+            return Left;
+        case Right:
+            return Top;
+        default:
+            break;
+    }
+    return currentDirection;
+}
+
+Direction ToRightChangeDirection(Direction currentDirection){
+    switch (currentDirection)
+    {
+        case Bottom:
+            return Right;
+            break;
+        case Left:
+            return Top;
+            break;
+        case Top:
+            return Right;
+        case Right:
+            return Bottom;
+        default:
+            break;
+    }
+    return currentDirection;
 }

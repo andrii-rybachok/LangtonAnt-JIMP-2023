@@ -1,16 +1,23 @@
+#include "coordinates.h"
 #ifndef langtonAnt
 #define langtonAnt
-typedef enum{
-    Left=0,Right,Top,Bottom
-} Direction;
+#include "cellColor.h"
+
+
 
 typedef struct 
 {
-    int xPosition;
-    int yPosition;
+    Coordinates cords;
     Direction direction;
 } LangtonAnt;
 
 
 LangtonAnt initializeAnt(int xStartPosition,int yStartPosition,Direction direction);
+
+void antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax);
+
+Direction ToLeftChangeDirection(Direction currentDirection);
+
+Direction ToRightChangeDirection(Direction currentDirection);
+
 #endif
