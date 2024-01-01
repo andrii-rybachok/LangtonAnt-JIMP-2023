@@ -1,59 +1,124 @@
 #include <stdio.h>  
 #include <unistd.h>  
 #include <stdlib.h>
+#include "steptime.h"
 #include "langtonAnt.h"
 #include "langtonField.h"
+
 int main(int argc, char *argv[])  
 { 
-    int opt,rows,cols,iterationsCount,blackCellsPercent; 
-    Direction startDirection= Right;
-    while((opt = getopt(argc, argv, "r:c:i:d:b:")) != -1)  
+    int opt, rows, cols, iterationsCount, blackCellsPercent, obstaclesPercent; 
+    Direction startDirection = Right;
+    char filePrefix[20] = "file";  // Default file prefix
+
+    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:o:")) != -1)  
     {  
-        switch(opt)  
+        switch (opt)   
         {  
-            
             case 'r':  
                 printf("rows: %s\n", optarg); 
-                rows=atoi(optarg); 
+                rows = atoi(optarg); 
                 break;  
             case 'c':  
                 printf("columns: %s\n", optarg);  
-                cols=atoi(optarg);
+                cols = atoi(optarg);
                 break; 
             case 'i':  
-                iterationsCount=atoi(optarg);
+                iterationsCount = atoi(optarg);
                 printf("Count of iterations: %d\n", iterationsCount);  
                 break; 
             case 'd':  
                 printf("Start direction: %s\n", optarg);
-                int startDirectionCheck=atoi(optarg);
-                if(startDirectionCheck<0 && startDirectionCheck>3){
+                int startDirectionCheck = atoi(optarg);
+                if (startDirectionCheck < 0 || startDirectionCheck > 3){
                     printf("Direction could only be in range 0-3");
-                    startDirection=0;
+                    startDirection = 0;
                 }
                 else{
-                    startDirection=startDirectionCheck;
+                    startDirection = startDirectionCheck;
                 }
                 break; 
             case 'b':  
                 printf("Black cells percent: %s\n", optarg);
-                blackCellsPercent=atoi(optarg);
+                blackCellsPercent = atoi(optarg);
                 break; 
+            case 'p':  
+                printf("File prefix: %s\n", optarg);
+                strncpy(filePrefix, optarg, sizeof(filePrefix) - 1);
+                break;
+            case 'm':
+                printf("Create map with obstacles\n");
+                obstaclesPercent = atoi(optarg);
+                break;
+            case 'o':
+                printf("Obstacles percent: %s\n", optarg);
+                obstaclesPercent = atoi(optarg);
+                break;
             case ':':  
                 printf("option needs a value\n");  
                 break;  
         }  
     }  
-    LangtonField field = initializeField(rows,cols,blackCellsPercent,startDirection);
+
+    LangtonField field;
+
+    if (obstaclesPercent > 0)
+    {
+        field = initializeFieldWithObstacles(rows, cols, obstaclesPercent, startDirection);
+    }
+    else
+    {
+        field = initializeField(rows, cols, blackCellsPercent, startDirection);
+    }
     
+    // File names with iteration number and prefix
+    char fileName[50];
+    
+    // Open output file for writing initial state
+    snprintf(fileName, sizeof(fileName), "%s_nriteracji.txt", filePrefix);
+    FILE* outputFile = fopen(fileName, "w");
+    if (outputFile == NULL) {
+        perror("Error opening output file");
+        return 1;
+    }
+    
+    // Print initial state to the file
+    printFieldToFile(&field, outputFile);
+    fclose(outputFile);
+
+    // Print initial state to the terminal
+    clearScreen();
     printField(&field);
-    printf("\n");
+    sleepMillis(500);  // Sleep for 0.5 seconds for visualization
 
     for (int i = 0; i < iterationsCount; i++)
     {
         fieldIterate(&field);
+
+        // Open output file for writing current state
+        snprintf(fileName, sizeof(fileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
+        outputFile = fopen(fileName, "w");
+        if (outputFile == NULL) {
+            perror("Error opening output file");
+            return 1;
+        }
+
+        // Print current state to the file
+        printFieldToFile(&field, outputFile);
+        fclose(outputFile);
+
+        // Clear the screen and print the updated field to the terminal
+        clearScreen();
         printField(&field);
-        printf("\n");
+        sleepMillis(500);  // Sleep for 0.5 seconds for visualization
     }
+
+    // Free allocated memory
+    for (int i = 0; i < field.rows; i++)
+    {
+        free(field.field[i]);
+    }
+    free(field.field);
+
     return 0; 
-} 
+}
