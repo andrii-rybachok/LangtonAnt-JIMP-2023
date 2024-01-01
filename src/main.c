@@ -70,32 +70,27 @@ int main(int argc, char *argv[])
     {
         field = initializeField(rows, cols, blackCellsPercent, startDirection);
     }
-    
-    // File names with iteration number and prefix
+
     char fileName[50];
-    
-    // Open output file for writing initial state
+
     snprintf(fileName, sizeof(fileName), "%s_nriteracji.txt", filePrefix);
     FILE* outputFile = fopen(fileName, "w");
     if (outputFile == NULL) {
         perror("Error opening output file");
         return 1;
     }
-    
-    // Print initial state to the file
+
     printFieldToFile(&field, outputFile);
     fclose(outputFile);
 
-    // Print initial state to the terminal
     clearScreen();
     printField(&field);
-    sleepMillis(500);  // Sleep for 0.5 seconds for visualization
+    sleepMillis(500);
 
     for (int i = 0; i < iterationsCount; i++)
     {
         fieldIterate(&field);
 
-        // Open output file for writing current state
         snprintf(fileName, sizeof(fileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
         outputFile = fopen(fileName, "w");
         if (outputFile == NULL) {
@@ -103,17 +98,14 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-        // Print current state to the file
         printFieldToFile(&field, outputFile);
         fclose(outputFile);
 
-        // Clear the screen and print the updated field to the terminal
         clearScreen();
         printField(&field);
-        sleepMillis(500);  // Sleep for 0.5 seconds for visualization
+        sleepMillis(500);
     }
 
-    // Free allocated memory
     for (int i = 0; i < field.rows; i++)
     {
         free(field.field[i]);
