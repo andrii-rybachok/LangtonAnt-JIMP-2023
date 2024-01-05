@@ -1,19 +1,20 @@
 #include <stdio.h>  
 #include <unistd.h>  
 #include <stdlib.h>
-#include "steptime.h"
+#include <string.h>
 #include "langtonAnt.h"
 #include "langtonField.h"
 
 int main(int argc, char *argv[])  
 { 
-    int opt, rows, cols, iterationsCount, blackCellsPercent, obstaclesPercent; 
+    int opt, rows, cols, iterationsCount, blackCellsPercent; 
     Direction startDirection = Right;
-    char filePrefix[20] = "file";  // Default file prefix
+    char filePrefix[20] = "file";
+    const char* mapFilePrefix = NULL;
 
-    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:o:")) != -1)  
+    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:")) != -1)  
     {  
-        switch (opt)   
+        switch (opt)  
         {  
             case 'r':  
                 printf("rows: %s\n", optarg); 
@@ -45,14 +46,9 @@ int main(int argc, char *argv[])
             case 'p':  
                 printf("File prefix: %s\n", optarg);
                 strncpy(filePrefix, optarg, sizeof(filePrefix) - 1);
-                break;
-            case 'm':
-                printf("Create map with obstacles\n");
-                obstaclesPercent = atoi(optarg);
-                break;
-            case 'o':
-                printf("Obstacles percent: %s\n", optarg);
-                obstaclesPercent = atoi(optarg);
+                break; 
+            case 'm':  
+                mapFilePrefix = optarg;
                 break;
             case ':':  
                 printf("option needs a value\n");  
@@ -60,57 +56,40 @@ int main(int argc, char *argv[])
         }  
     }  
 
-    LangtonField field;
+    LangtonField field = initializeField(rows, cols, blackCellsPercent, startDirection);
 
-    if (obstaclesPercent > 0)
-    {
-        field = initializeFieldWithObstacles(rows, cols, obstaclesPercent, startDirection);
-    }
-    else
-    {
+    if (mapFilePrefix != NULL) {
+        char mapFileName[50];
+        snprintf(mapFileName, sizeof(mapFileName), "%s%d.txt", mapFilePrefix, 1);
+        field = initializeFieldWithMap(rows, cols, startDirection, mapFileName);
+    } else {
         field = initializeField(rows, cols, blackCellsPercent, startDirection);
     }
 
-    char fileName[50];
+    char inputFileName[50], outputFileName[50];
 
-    snprintf(fileName, sizeof(fileName), "%s_nriteracji.txt", filePrefix);
-    FILE* outputFile = fopen(fileName, "w");
-    if (outputFile == NULL) {
-        perror("Error opening output file");
+    snprintf(inputFileName, sizeof(inputFileName), "%s_nriteracji.txt", filePrefix);
+    FILE* initialFile = fopen(inputFileName, "w");
+    if (initialFile == NULL) {
+        perror("Error opening initial file");
         return 1;
     }
-
-    printFieldToFile(&field, outputFile);
-    fclose(outputFile);
-
-    clearScreen();
-    printField(&field);
-    sleepMillis(500);
+    printFieldToFile(&field, initialFile);
+    fclose(initialFile);
 
     for (int i = 0; i < iterationsCount; i++)
     {
         fieldIterate(&field);
 
-        snprintf(fileName, sizeof(fileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
-        outputFile = fopen(fileName, "w");
+        snprintf(outputFileName, sizeof(outputFileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
+        FILE* outputFile = fopen(outputFileName, "w");
         if (outputFile == NULL) {
             perror("Error opening output file");
             return 1;
         }
-
         printFieldToFile(&field, outputFile);
         fclose(outputFile);
-
-        clearScreen();
-        printField(&field);
-        sleepMillis(500);
     }
-
-    for (int i = 0; i < field.rows; i++)
-    {
-        free(field.field[i]);
-    }
-    free(field.field);
 
     return 0; 
 }
