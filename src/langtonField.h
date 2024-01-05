@@ -2,7 +2,6 @@
 #define langtonField
 #include "langtonAnt.h"
 #include <stdio.h>
-#include <string.h>
 
 typedef struct {
     int** field;
@@ -11,8 +10,7 @@ typedef struct {
     LangtonAnt ant;
 } LangtonField;
 
-
-LangtonField initializeField(int rows,int cols,int blackColsPercent,Direction antStartDirection);
+LangtonField initializeField(int rows, int cols, int blackColsPercent, Direction antStartDirection);
 
 void fieldIterate(LangtonField* langField);
 
@@ -20,5 +18,7 @@ void printField(LangtonField* field);
 
 void printFieldToFile(LangtonField* field, FILE* file);
 
-LangtonField initializeFieldWithObstacles(int rows, int cols, int obstaclesPercent, Direction antStartDirection);
+LangtonField initializeFieldWithMap(int rows, int cols, Direction antStartDirection, const char* mapFileName);
+
+void loadMapFromFile(LangtonField* langField, const char* fileName);
 #endif
