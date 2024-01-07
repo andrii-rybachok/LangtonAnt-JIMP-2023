@@ -2,6 +2,18 @@
 #define langtonField
 #include "langtonAnt.h"
 #include <stdio.h>
+#include <wchar.h>
+
+#define ARROW_NORTH_WHITE '^'
+#define ARROW_NORTH_BLACK '^'
+#define ARROW_EAST_WHITE '>'
+#define ARROW_EAST_BLACK '>'
+#define ARROW_SOUTH_WHITE 'v'
+#define ARROW_SOUTH_BLACK 'v'
+#define ARROW_WEST_WHITE '<'
+#define ARROW_WEST_BLACK '<'
+#define SQUARE_WHITE ' '
+#define SQUARE_BLACK '█'
 
 typedef struct {
     int** field;
