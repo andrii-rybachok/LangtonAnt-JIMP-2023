@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <math.h>
+#include <wchar.h>
 
 LangtonField initializeField(int rows, int cols, int blackColsPercent, Direction antStartDirection) {
     LangtonField lngField;
@@ -82,7 +83,30 @@ void printField(LangtonField* field) {
 void printFieldToFile(LangtonField* field, FILE* file) {
     for (int i = 0; i < field->rows; i++) {
         for (int j = 0; j < field->cols; j++) {
-            fprintf(file, "%d ", field->field[i][j]);
+            if (field->ant.cords.x == j && field->ant.cords.y == i) {
+                char antSymbol;
+                switch (field->ant.direction) {
+                    case Top:
+                        antSymbol = (field->field[i][j] == 0) ? ARROW_NORTH_WHITE : ARROW_NORTH_BLACK;
+                        break;
+                    case Bottom:
+                        antSymbol = (field->field[i][j] == 0) ? ARROW_SOUTH_WHITE : ARROW_SOUTH_BLACK;
+                        break;
+                    case Left:
+                        antSymbol = (field->field[i][j] == 0) ? ARROW_WEST_WHITE : ARROW_WEST_BLACK;
+                        break;
+                    case Right:
+                        antSymbol = (field->field[i][j] == 0) ? ARROW_EAST_WHITE : ARROW_EAST_BLACK;
+                        break;
+                    default:
+                        break;
+                }
+                fprintf(file, "%c", antSymbol);
+            } else {
+                char squareSymbol = (field->field[i][j] == 0) ? SQUARE_WHITE : SQUARE_BLACK;
+                fprintf(file, "%c", squareSymbol);
+            }
+            fprintf(file, " ");
         }
         fprintf(file, "\n");
     }
