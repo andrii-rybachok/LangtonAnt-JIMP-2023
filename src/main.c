@@ -51,7 +51,9 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < iterationsCount; i++)
     {
-        fieldIterate(&field);
+        if(fieldIterate(&field)==-1){
+            break;
+        }
         printField(&field);
         printf("\n");
     }

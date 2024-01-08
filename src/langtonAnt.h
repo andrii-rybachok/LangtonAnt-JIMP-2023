@@ -14,7 +14,7 @@ typedef struct
 
 LangtonAnt initializeAnt(int xStartPosition,int yStartPosition,Direction direction);
 
-void antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax);
+int antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax);
 
 Direction ToLeftChangeDirection(Direction currentDirection);
 

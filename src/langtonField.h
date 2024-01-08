@@ -11,7 +11,7 @@ typedef struct {
 
 LangtonField initializeField(int rows,int cols,int blackColsPercent,Direction antStartDirection);
 
-void fieldIterate(LangtonField* langField);
+int fieldIterate(LangtonField* langField);
 
 void printField(LangtonField* field);
 #endif

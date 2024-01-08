@@ -41,17 +41,17 @@ LangtonField initializeField(int rows,int cols,int blackColsPercent,Direction an
     return lngField;
 }
 
-void fieldIterate(LangtonField* langField){
+int fieldIterate(LangtonField* langField){
     if(langField->field==NULL){
         fprintf(stderr, "Field does not initialized!\n");
         exit(EXIT_FAILURE);
     }
     int* cell = &(langField->field[langField->ant.cords.y][langField->ant.cords.x]);
     CellColor color= *cell;
-    antIterate(&langField->ant,color,langField->cols-1,langField->rows-1);
+    int returnValue= antIterate(&langField->ant,color,langField->cols-1,langField->rows-1);
     color = toggleColor(color);
     *cell = (int)color;
-
+    return returnValue;
 }
 void printField(LangtonField* field){
     for (int i = 0; i < field->rows; i++)

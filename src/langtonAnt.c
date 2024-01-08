@@ -8,7 +8,7 @@ LangtonAnt initializeAnt(int xStartPosition,int yStartPosition,Direction directi
     return ant;
 }
 
-void antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
+int antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
     switch (color)
     {
         case Black:
@@ -22,18 +22,11 @@ void antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
     }
     move(&(ant->cords),ant->direction);
 
-    if(ant->cords.x>xMax){
-        ant->cords.x=0;
+   
+    if((ant->cords.x>xMax || ant->cords.x<0 || ant->cords.y>yMax || ant->cords.y<0)){
+        return -1;
     }
-    else if(ant->cords.x<0){
-        ant->cords.x = xMax;
-    }
-    if(ant->cords.y>yMax){
-        ant->cords.y=0;
-    } else if(ant->cords.y<0){
-        ant->cords.y=yMax;
-    }
-    
+    return 0;
 }
 Direction ToLeftChangeDirection(Direction currentDirection){
     switch (currentDirection)
