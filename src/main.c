@@ -82,7 +82,6 @@ int main(int argc, char *argv[])
         if(fieldIterate(&field)==-1){
             break;
         }
-        fieldIterate(&field);
 
         snprintf(outputFileName, sizeof(outputFileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
         FILE* outputFile = fopen(outputFileName, "w");
