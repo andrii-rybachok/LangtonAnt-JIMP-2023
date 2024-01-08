@@ -79,6 +79,9 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < iterationsCount; i++)
     {
+        if(fieldIterate(&field)==-1){
+            break;
+        }
         fieldIterate(&field);
 
         snprintf(outputFileName, sizeof(outputFileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
@@ -89,6 +92,7 @@ int main(int argc, char *argv[])
         }
         printFieldToFile(&field, outputFile);
         fclose(outputFile);
+
     }
 
     return 0; 

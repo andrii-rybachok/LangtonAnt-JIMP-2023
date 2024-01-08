@@ -9,4 +9,5 @@ CellColor toggleColor(CellColor color){
     default:
         break;
     }
+    return color;
 }
