@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     char filePrefix[20] = "file";
     const char* mapFilePrefix = NULL;
 
-    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:")) != -1)  
+    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:")) != -1)  
     {  
         switch (opt)  
         {  
@@ -47,9 +47,6 @@ int main(int argc, char *argv[])
                 printf("File prefix: %s\n", optarg);
                 strncpy(filePrefix, optarg, sizeof(filePrefix) - 1);
                 break; 
-            case 'm':  
-                mapFilePrefix = optarg;
-                break;
             case ':':  
                 printf("option needs a value\n");  
                 break;  
@@ -57,14 +54,6 @@ int main(int argc, char *argv[])
     }  
 
     LangtonField field = initializeField(rows, cols, blackCellsPercent, startDirection);
-
-    if (mapFilePrefix != NULL) {
-        char mapFileName[50];
-        snprintf(mapFileName, sizeof(mapFileName), "%s%d.txt", mapFilePrefix, 1);
-        field = initializeFieldWithMap(rows, cols, startDirection, mapFileName);
-    } else {
-        field = initializeField(rows, cols, blackCellsPercent, startDirection);
-    }
 
     char inputFileName[50], outputFileName[50];
 
@@ -82,7 +71,6 @@ int main(int argc, char *argv[])
         if(fieldIterate(&field)==-1){
             break;
         }
-        fieldIterate(&field);
 
         snprintf(outputFileName, sizeof(outputFileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
         FILE* outputFile = fopen(outputFileName, "w");
