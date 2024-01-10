@@ -4,16 +4,18 @@
 #include <stdio.h>
 #include <wchar.h>
 
-#define ARROW_NORTH_WHITE '^'
-#define ARROW_NORTH_BLACK '^'
-#define ARROW_EAST_WHITE '>'
-#define ARROW_EAST_BLACK '>'
-#define ARROW_SOUTH_WHITE 'v'
-#define ARROW_SOUTH_BLACK 'v'
-#define ARROW_WEST_WHITE '<'
-#define ARROW_WEST_BLACK '<'
-#define SQUARE_WHITE ' '
-#define SQUARE_BLACK '█'
+
+
+#define ARROW_NORTH_WHITE L"△"
+#define ARROW_NORTH_BLACK L"▲"
+#define ARROW_EAST_WHITE L"▷"
+#define ARROW_EAST_BLACK L"▶"
+#define ARROW_SOUTH_WHITE L"▽"
+#define ARROW_SOUTH_BLACK L"▼"
+#define ARROW_WEST_WHITE L"◁"
+#define ARROW_WEST_BLACK L"◀"
+#define SQUARE_WHITE L" "
+#define SQUARE_BLACK L"█"
 
 typedef struct {
     int** field;

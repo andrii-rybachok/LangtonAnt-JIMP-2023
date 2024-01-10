@@ -2,6 +2,8 @@
 #include <unistd.h>  
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
+#include <locale.h>
 #include "langtonAnt.h"
 #include "langtonField.h"
 
@@ -11,7 +13,11 @@ int main(int argc, char *argv[])
     Direction startDirection = Right;
     char filePrefix[20] = "file";
     const char* mapFilePrefix = NULL;
-
+    
+    wchar_t name[] = L"test"; 
+    setlocale(LC_ALL, "C.UTF-8");
+    wchar_t *wc = L"▶ hhh";
+    wprintf(L"%ls  \n", wc);
     while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:")) != -1)  
     {  
         switch (opt)  
