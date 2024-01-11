@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     char filePrefix[20] = "file";
     const char* mapFilePrefix = NULL;
 
-    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:")) != -1)  
+    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:")) != -1)  
     {  
         switch (opt)  
         {  
@@ -47,6 +47,9 @@ int main(int argc, char *argv[])
                 printf("File prefix: %s\n", optarg);
                 strncpy(filePrefix, optarg, sizeof(filePrefix) - 1);
                 break; 
+            case 'm':  
+                mapFilePrefix = optarg;
+                break;
             case ':':  
                 printf("option needs a value\n");  
                 break;  
@@ -55,9 +58,17 @@ int main(int argc, char *argv[])
 
     LangtonField field = initializeField(rows, cols, blackCellsPercent, startDirection);
 
+    if (mapFilePrefix != NULL) {
+        char mapFileName[50];
+        snprintf(mapFileName, sizeof(mapFileName), "dane/%s%d.txt", mapFilePrefix, 1);
+        field = initializeFieldWithMap(rows, cols, startDirection, mapFileName);
+    } else {
+        field = initializeField(rows, cols, blackCellsPercent, startDirection);
+    }
+
     char inputFileName[50], outputFileName[50];
 
-    snprintf(inputFileName, sizeof(inputFileName), "%s_nriteracji.txt", filePrefix);
+    snprintf(inputFileName, sizeof(inputFileName), "dane/%s_nriteracji.txt", filePrefix);
     FILE* initialFile = fopen(inputFileName, "w");
     if (initialFile == NULL) {
         perror("Error opening initial file");
@@ -72,7 +83,7 @@ int main(int argc, char *argv[])
             break;
         }
 
-        snprintf(outputFileName, sizeof(outputFileName), "%s_nriteracji%d.txt", filePrefix, i + 1);
+        snprintf(outputFileName, sizeof(outputFileName), "dane/%s_nriteracji%d.txt", filePrefix, i + 1);
         FILE* outputFile = fopen(outputFileName, "w");
         if (outputFile == NULL) {
             perror("Error opening output file");
