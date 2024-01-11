@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
     int opt, rows, cols, iterationsCount, blackCellsPercent; 
     Direction startDirection = Right;
     char filePrefix[20] = "file";
-    const char* mapFilePrefix = NULL;
 
     while ((opt = getopt(argc, argv, "r:c:i:d:b:p:")) != -1)  
     {  
