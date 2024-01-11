@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     if (mapFilePrefix != NULL) {
         char mapFileName[50];
-        snprintf(mapFileName, sizeof(mapFileName), "dane/%s%d.txt", mapFilePrefix, 1);
+        snprintf(mapFileName, sizeof(mapFileName), "%s%d.txt", mapFilePrefix, 1);
         field = initializeFieldWithMap(rows, cols, startDirection, mapFileName);
     } else {
         field = initializeField(rows, cols, blackCellsPercent, startDirection);
