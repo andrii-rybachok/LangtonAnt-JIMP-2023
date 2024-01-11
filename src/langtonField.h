@@ -12,8 +12,8 @@
 #define ARROW_SOUTH_BLACK "vv"
 #define ARROW_WEST_WHITE "<"
 #define ARROW_WEST_BLACK "<<"
-#define SQUARE_WHITE '0'
-#define SQUARE_BLACK '1'
+#define SQUARE_WHITE 'W'
+#define SQUARE_BLACK 'B'
 
 typedef struct {
     int** field;
