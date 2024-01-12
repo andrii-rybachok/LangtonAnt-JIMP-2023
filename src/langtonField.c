@@ -123,27 +123,31 @@ void loadMapFromFile(LangtonField* langField, FILE* file) {
         for (int j = 0; j < langField->cols; j++) {
             switch (tiles[j][0])
             {
-            case SQUARE_WHITE:
+            case MAP_SQUARE_WHITE:
                 langField->field[row][j]=0;
                 break;
-            case SQUARE_BLACK:
+            case MAP_SQUARE_BLACK:
                 langField->field[row][j]=0;
                 break;
-            case ARROW_NORTH_WHITE:
-            case ARROW_SOUTH_WHITE:
-            case ARROW_WEST_WHITE:
-            case ARROW_EAST_WHITE:
+            case MAP_ARROW_NORTH_WHITE:
+            case MAP_ARROW_SOUTH_WHITE:
+            case MAP_ARROW_WEST_WHITE:
+            case MAP_ARROW_EAST_WHITE:
                 langField->field[row][j]=0;
-                langField->ant.cords.x=j;
-                langField->ant.cords.y=row;
+                langField->ant = initializeAnt(j,row,getAntDirection(tiles[j][0]));
+                break;
+            case MAP_ARROW_NORTH_BLACK:
+            case MAP_ARROW_SOUTH_BLACK:
+            case MAP_ARROW_WEST_BLACK:
+            case MAP_ARROW_EAST_BLACK:
+                langField->field[row][j]=1;
+                langField->ant = initializeAnt(j,row,getAntDirection(tiles[j][0]));
                 break;
             default:
                 break;
             }
         }
     }
-   
-
     fclose(file);
 }
 

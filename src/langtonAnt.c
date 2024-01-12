@@ -28,16 +28,25 @@ int antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
     }
     return 0;
 }
-Direction getAntDirection(char* antSymbol){
+Direction getAntDirection(char antSymbol){
     switch (antSymbol)
     {
-    case :
-        
-        break;
-    
-    default:
-        break;
+        case MAP_ARROW_EAST_BLACK:
+        case MAP_ARROW_EAST_WHITE:
+            return Right;
+        case MAP_ARROW_WEST_BLACK:
+        case MAP_ARROW_WEST_WHITE:
+            return Left;
+        case MAP_ARROW_NORTH_BLACK:
+        case MAP_ARROW_NORTH_WHITE:
+            return Top;
+        case MAP_ARROW_SOUTH_BLACK:
+        case MAP_ARROW_SOUTH_WHITE:
+            return Bottom;
+        default:
+            break;
     }
+    return Right;
 }
 Direction ToLeftChangeDirection(Direction currentDirection){
     switch (currentDirection)
