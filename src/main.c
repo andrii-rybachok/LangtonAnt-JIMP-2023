@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         }  
     }  
 
-    LangtonField field = initializeField(rows, cols, blackCellsPercent, startDirection);
+    LangtonField field;
 
     if (mapFilePrefix != NULL) {
         char mapFileName[50];

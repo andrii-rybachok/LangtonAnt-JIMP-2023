@@ -28,6 +28,17 @@ int antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
     }
     return 0;
 }
+Direction getAntDirection(char* antSymbol){
+    switch (antSymbol)
+    {
+    case :
+        
+        break;
+    
+    default:
+        break;
+    }
+}
 Direction ToLeftChangeDirection(Direction currentDirection){
     switch (currentDirection)
     {
