@@ -87,7 +87,7 @@ void printFieldToFile(LangtonField* field, FILE* file) {
     for (int i = 0; i < field->rows; i++) {
         for (int j = 0; j < field->cols; j++) {
             if (field->ant.cords.x == j && field->ant.cords.y == i) {
-                char antSymbol;
+                char* antSymbol;
                 switch (field->ant.direction) {
                     case Top:
                         antSymbol = (field->field[i][j] == 0) ? ARROW_NORTH_WHITE : ARROW_NORTH_BLACK;
@@ -96,15 +96,15 @@ void printFieldToFile(LangtonField* field, FILE* file) {
                         antSymbol = (field->field[i][j] == 0) ? ARROW_SOUTH_WHITE : ARROW_SOUTH_BLACK;
                         break;
                     case Left:
-                        antSymbol = (field->field[i][j] == 0) ? ARROW_WEST_WHITE : ARROW_WEST_BLACK;
+                        antSymbol = (field->field[i][j] == 0) ?  ARROW_EAST_WHITE : ARROW_EAST_BLACK ;
                         break;
                     case Right:
-                        antSymbol = (field->field[i][j] == 0) ? ARROW_EAST_WHITE : ARROW_EAST_BLACK;
+                        antSymbol = (field->field[i][j] == 0) ? ARROW_WEST_WHITE : ARROW_WEST_BLACK;
                         break;
                     default:
                         break;
                 }
-                fprintf(file, "%c", antSymbol);
+                fprintf(file, "%s", antSymbol);
             } else {
                 char squareSymbol = (field->field[i][j] == 0) ? SQUARE_WHITE : SQUARE_BLACK;
                 fprintf(file, "%c", squareSymbol);
