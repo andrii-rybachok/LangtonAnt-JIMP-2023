@@ -2,18 +2,7 @@
 #define langtonField
 #include "langtonAnt.h"
 #include <stdio.h>
-#include <wchar.h>
 
-#define ARROW_NORTH_WHITE "^"
-#define ARROW_NORTH_BLACK "^^"
-#define ARROW_EAST_WHITE "<"
-#define ARROW_EAST_BLACK "<<"
-#define ARROW_SOUTH_WHITE "v"
-#define ARROW_SOUTH_BLACK "v"
-#define ARROW_WEST_WHITE ">"
-#define ARROW_WEST_BLACK ">>"
-#define SQUARE_WHITE 'W'
-#define SQUARE_BLACK 'B'
 
 typedef struct {
     int** field;
@@ -30,7 +19,8 @@ void printField(LangtonField* field);
 
 void printFieldToFile(LangtonField* field, FILE* file);
 
-LangtonField initializeFieldWithMap(int rows, int cols, Direction antStartDirection, const char* mapFileName);
+LangtonField initializeFieldWithMap(int rows, int cols, const char* mapFileName);
 
-void loadMapFromFile(LangtonField* langField, const char* fileName);
+void loadMapFromFile(LangtonField* langField,const char* mapFileName);
+int checkMap(FILE* file,int* cols,int* rows);
 #endif
