@@ -2,9 +2,9 @@
 #define langtonField
 #include "langtonAnt.h"
 #include <stdio.h>
-#include <wchar.h>
-
-
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
 typedef struct {
     int** field;
@@ -21,7 +21,8 @@ void printField(LangtonField* field);
 
 void printFieldToFile(LangtonField* field, FILE* file);
 
-LangtonField initializeFieldWithMap(int rows, int cols, Direction antStartDirection, const char* mapFileName);
+LangtonField initializeFieldWithMap(int rows, int cols, const char* mapFileName);
 
-void loadMapFromFile(LangtonField* langField, FILE* file);
+void loadMapFromFile(LangtonField* langField,const char* mapFileName);
+int checkMap(FILE* file,int* cols,int* rows);
 #endif

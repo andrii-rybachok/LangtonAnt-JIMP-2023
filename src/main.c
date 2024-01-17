@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     int opt, rows, cols, iterationsCount, blackCellsPercent; 
     Direction startDirection = Right;
     char filePrefix[20] = "file";
-    const char* mapFilePrefix = NULL;
+    char* mapFileName = NULL;
 
     while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:")) != -1)  
     {  
@@ -48,7 +48,8 @@ int main(int argc, char *argv[])
                 strncpy(filePrefix, optarg, sizeof(filePrefix) - 1);
                 break; 
             case 'm':  
-                mapFilePrefix = optarg;
+                printf("Map file name: %s\n", optarg);
+                mapFileName=optarg;
                 break;
             case ':':  
                 printf("option needs a value\n");  
@@ -58,11 +59,11 @@ int main(int argc, char *argv[])
 
     LangtonField field;
 
-    if (mapFilePrefix != NULL) {
-        char mapFileName[50];
-        snprintf(mapFileName, sizeof(mapFileName), "%s%d.txt", mapFilePrefix, 1);
-        field = initializeFieldWithMap(rows, cols, startDirection, mapFileName);
+    if (mapFileName != NULL) {
+
+        field = initializeFieldWithMap(rows, cols,  mapFileName);
     } else {
+
         field = initializeField(rows, cols, blackCellsPercent, startDirection);
     }
 

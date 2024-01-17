@@ -31,17 +31,17 @@ int antIterate(LangtonAnt* ant,CellColor color,int xMax,int yMax){
 Direction getAntDirection(char antSymbol){
     switch (antSymbol)
     {
-        case MAP_ARROW_EAST_BLACK:
-        case MAP_ARROW_EAST_WHITE:
+        case ARROW_EAST_BLACK:
+        case ARROW_EAST_WHITE:
             return Right;
-        case MAP_ARROW_WEST_BLACK:
-        case MAP_ARROW_WEST_WHITE:
+        case ARROW_WEST_BLACK:
+        case ARROW_WEST_WHITE:
             return Left;
-        case MAP_ARROW_NORTH_BLACK:
-        case MAP_ARROW_NORTH_WHITE:
+        case ARROW_NORTH_BLACK:
+        case ARROW_NORTH_WHITE:
             return Top;
-        case MAP_ARROW_SOUTH_BLACK:
-        case MAP_ARROW_SOUTH_WHITE:
+        case ARROW_SOUTH_BLACK:
+        case ARROW_SOUTH_WHITE:
             return Bottom;
         default:
             break;

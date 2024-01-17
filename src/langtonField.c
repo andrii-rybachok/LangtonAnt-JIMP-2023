@@ -115,98 +115,64 @@ void printFieldToFile(LangtonField* field, FILE* file) {
     }
 }
 
-void loadMapFromFile(LangtonField* langField, FILE* file) {
+void loadMapFromFile(LangtonField* langField,const char* mapFileName) {
     char line[256];
     int row =0;
+    FILE* file = fopen(mapFileName, "r");
+    if (file == NULL) {
+
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
     while (fgets(line, sizeof(line), file)) {
-        char** tiles = strSplit(line,' ');
-        for (int j = 0; j < langField->cols; j++) {
-            switch (tiles[j][0])
-            {
-            case MAP_SQUARE_WHITE:
-                langField->field[row][j]=0;
-                break;
-            case MAP_SQUARE_BLACK:
-                langField->field[row][j]=0;
-                break;
-            case MAP_ARROW_NORTH_WHITE:
-            case MAP_ARROW_SOUTH_WHITE:
-            case MAP_ARROW_WEST_WHITE:
-            case MAP_ARROW_EAST_WHITE:
-                langField->field[row][j]=0;
-                langField->ant = initializeAnt(j,row,getAntDirection(tiles[j][0]));
-                break;
-            case MAP_ARROW_NORTH_BLACK:
-            case MAP_ARROW_SOUTH_BLACK:
-            case MAP_ARROW_WEST_BLACK:
-            case MAP_ARROW_EAST_BLACK:
-                langField->field[row][j]=1;
-                langField->ant = initializeAnt(j,row,getAntDirection(tiles[j][0]));
-                break;
-            default:
-                break;
+        int j=0;
+        for (int i = 0; i < strlen(line); i++)
+        {
+            if(line[i]!=' ' && line[i]!='\n'){
+                switch (line[i])
+                {
+                    case SQUARE_WHITE:
+                        langField->field[row][j]=0;
+                        break;
+                    case SQUARE_BLACK:
+                        langField->field[row][j]=1;
+                        break;
+                    case ARROW_NORTH_WHITE:
+                    case ARROW_SOUTH_WHITE:
+                    case ARROW_WEST_WHITE:
+                    case ARROW_EAST_WHITE:
+                        langField->field[row][j]=0;
+                        langField->ant = initializeAnt(j,row,getAntDirection(line[i]));
+                        break;
+                    case ARROW_NORTH_BLACK:
+                    case ARROW_SOUTH_BLACK:
+                    case ARROW_WEST_BLACK:
+                    case ARROW_EAST_BLACK:
+                        langField->field[row][j]=1;
+                        langField->ant = initializeAnt(j,row,getAntDirection(line[i]));
+                        break;
+                    default:
+                        break;
+                }
+                j++;
             }
         }
+        row++;
     }
     fclose(file);
 }
 
-char** strSplit(char* a_str, const char a_delim)
-{
-    char** result    = 0;
-    size_t count     = 0;
-    char* tmp        = a_str;
-    char* last_comma = 0;
-    char delim[2];
-    delim[0] = a_delim;
-    delim[1] = 0;
 
-    while (*tmp)
-    {
-        if (a_delim == *tmp)
-        {
-            count++;
-            last_comma = tmp;
-        }
-        tmp++;
-    }
-
-    count += last_comma < (a_str + strlen(a_str) - 1);
-    count++;
-
-    result = malloc(sizeof(char*) * count);
-
-    if (result)
-    {
-        size_t idx  = 0;
-        char* token = strtok(a_str, delim);
-
-        while (token)
-        {
-            assert(idx < count);
-            *(result + idx++) = strdup(token);
-            token = strtok(0, delim);
-        }
-        assert(idx == count - 1);
-        *(result + idx) = 0;
-    }
-
-    return result;
-}
-
-LangtonField initializeFieldWithMap(int rows, int cols, Direction antStartDirection, const char* mapFileName) {
+LangtonField initializeFieldWithMap(int rows, int cols,  const char* mapFileName) {
     FILE* file = fopen(mapFileName, "r");
+
     if (file == NULL) {
+
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
     LangtonField lngField;
-    if(checkMap(file,&lngField.cols,&lngField.rows)==-1){
-        fprintf(stderr, "Wrong map sizes!!!\n");
-        fclose(file);
-        exit(EXIT_FAILURE);
-    }
-   
+    checkMap(file,&lngField.cols,&lngField.rows);
 
     lngField.field = malloc(rows * sizeof(int*));
     for (int i = 0; i < rows; i++) {
@@ -220,7 +186,7 @@ LangtonField initializeFieldWithMap(int rows, int cols, Direction antStartDirect
 
     loadMapFromFile(&lngField, mapFileName);
 
-
+    fclose(file);
     return lngField;
 }
 #define BUF_SIZE 65536
@@ -228,35 +194,21 @@ LangtonField initializeFieldWithMap(int rows, int cols, Direction antStartDirect
 int checkMap(FILE* file,int* cols,int* rows)
 {
     char buf[BUF_SIZE];
-    int counter = 0;
-    for(;;)
-    {
-        size_t res = fread(buf, 1, BUF_SIZE, file);
-        if (ferror(file))
-            return -1;
+    *rows = 0;
+    *cols=0;
 
-        int i;
-        int prevRows;
-        for(i = 0; i < res; i++){
-
-            *rows++;
-            if (buf[i] == '\n'){
-                counter++;
-                if(counter==1){
-                    prevRows=*rows;
-                }
-                if(prevRows==*rows){
-                    rows==0;
-                }
-                else{
-                    return -1;
+    while(fgets(buf, BUF_SIZE, file)) {
+        if(strlen(buf)>1){
+            *rows+=1;
+            if(*rows==1){
+                for(int i = 0; i < strlen(buf); i++){
+                    if(buf[i]!=' ' && buf[i]!='\n'){
+                        *cols+=1;
+                    }          
                 }
             }
         }
-        if (feof(file))
-            *rows=prevRows;
-            break;
     }
-    
+   
     return 0;
 }
