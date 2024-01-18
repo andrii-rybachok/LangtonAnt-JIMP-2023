@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
 
         field = initializeField(rows, cols, blackCellsPercent, startDirection);
     }
-
     char inputFileName[50], outputFileName[50];
 
     snprintf(inputFileName, sizeof(inputFileName), "dane/%s_nriteracji.txt", filePrefix);
