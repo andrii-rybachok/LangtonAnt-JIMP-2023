@@ -71,6 +71,8 @@ Zapisuje stan planszy do pliku.
 Wczytuje mapę planszy z pliku do struktury LangtonField.
 •	initializeFieldWithMap (langtonField.h):
 Inicjalizuje planszę z mapy wczytanej z pliku.
+•	checkMap (langtonField.h):
+służy do analizy zawartości pliku.
 
 Przykładowe Działanie Programu:
 Uruchomienie programu z przykładowymi parametrami:
