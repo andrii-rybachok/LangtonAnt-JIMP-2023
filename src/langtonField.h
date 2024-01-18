@@ -2,7 +2,7 @@
 #define langtonField
 #include "langtonAnt.h"
 #include <stdio.h>
-
+#include <string.h>
 
 typedef struct {
     int** field;
