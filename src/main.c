@@ -2,17 +2,20 @@
 #include <unistd.h>  
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "langtonAnt.h"
 #include "langtonField.h"
 
 int main(int argc, char *argv[])  
 { 
     int opt, rows, cols, iterationsCount, blackCellsPercent; 
+    blackCellsPercent=0;
+    bool animationOn=false;
     Direction startDirection = Right;
     char filePrefix[20] = "file";
     char* mapFileName = NULL;
 
-    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:")) != -1)  
+    while ((opt = getopt(argc, argv, "r:c:i:d:b:p:m:a")) != -1)  
     {  
         switch (opt)  
         {  
@@ -47,10 +50,14 @@ int main(int argc, char *argv[])
                 printf("File prefix: %s\n", optarg);
                 strncpy(filePrefix, optarg, sizeof(filePrefix) - 1);
                 break; 
+            case 'a':  
+                animationOn=true;
+                break; 
             case 'm':  
                 printf("Map file name: %s\n", optarg);
                 mapFileName=optarg;
                 break;
+       
             case ':':  
                 printf("option needs a value\n");  
                 break;  
@@ -61,7 +68,7 @@ int main(int argc, char *argv[])
 
     if (mapFileName != NULL) {
 
-        field = initializeFieldWithMap(rows, cols,  mapFileName);
+        field = initializeFieldWithMap(mapFileName);
     } else {
 
         field = initializeField(rows, cols, blackCellsPercent, startDirection);
@@ -76,11 +83,22 @@ int main(int argc, char *argv[])
         return 1;
     }
     printFieldToFile(&field, initialFile);
+    if(animationOn){
+        printFieldToFile(&field,stdout);
+        delay(1);
+        system("cls"); 
+    }
     fclose(initialFile);
 
     for (int i = 0; i < iterationsCount; i++)
     {
-        if(fieldIterate(&field)==-1){
+        int iterateRes=fieldIterate(&field);
+        if (animationOn && iterateRes==-1)
+        {
+            printf("\nMrowka doszla do sciany");
+        }
+        
+        if(iterateRes==-1){
             break;
         }
 
@@ -89,6 +107,11 @@ int main(int argc, char *argv[])
         if (outputFile == NULL) {
             perror("Error opening output file");
             return 1;
+        }
+        if(animationOn){
+            printFieldToFile(&field,stdout);
+            delay(1);
+            system("cls"); 
         }
         printFieldToFile(&field, outputFile);
         fclose(outputFile);

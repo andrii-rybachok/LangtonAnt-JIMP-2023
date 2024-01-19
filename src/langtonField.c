@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <wchar.h>
+#define BUF_SIZE 65536
 
 LangtonField initializeField(int rows, int cols, int blackColsPercent, Direction antStartDirection) {
     LangtonField lngField;
@@ -163,7 +164,7 @@ void loadMapFromFile(LangtonField* langField,const char* mapFileName) {
 }
 
 
-LangtonField initializeFieldWithMap(int rows, int cols,  const char* mapFileName) {
+LangtonField initializeFieldWithMap( const char* mapFileName) {
     FILE* file = fopen(mapFileName, "r");
 
     if (file == NULL) {
@@ -174,9 +175,9 @@ LangtonField initializeFieldWithMap(int rows, int cols,  const char* mapFileName
     LangtonField lngField;
     checkMap(file,&lngField.cols,&lngField.rows);
 
-    lngField.field = malloc(rows * sizeof(int*));
-    for (int i = 0; i < rows; i++) {
-        lngField.field[i] = calloc(cols, sizeof(int));
+    lngField.field = malloc(lngField.cols * sizeof(int*));
+    for (int i = 0; i < lngField.rows; i++) {
+        lngField.field[i] = calloc(lngField.cols, sizeof(int));
     }
 
     if (lngField.field == NULL) {
@@ -189,7 +190,6 @@ LangtonField initializeFieldWithMap(int rows, int cols,  const char* mapFileName
     fclose(file);
     return lngField;
 }
-#define BUF_SIZE 65536
 
 int checkMap(FILE* file,int* cols,int* rows)
 {
@@ -211,4 +211,13 @@ int checkMap(FILE* file,int* cols,int* rows)
     }
    
     return 0;
+}
+void delay(int number_of_seconds)
+{
+    int milli_seconds = 1000 * number_of_seconds;
+ 
+    clock_t start_time = clock();
+ 
+    while (clock() < start_time + milli_seconds)
+        ;
 }

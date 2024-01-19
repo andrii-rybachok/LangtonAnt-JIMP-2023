@@ -20,4 +20,5 @@ Direction ToLeftChangeDirection(Direction currentDirection);
 
 Direction ToRightChangeDirection(Direction currentDirection);
 Direction getAntDirection(char antSymbol);
+
 #endif

@@ -19,8 +19,10 @@ void printField(LangtonField* field);
 
 void printFieldToFile(LangtonField* field, FILE* file);
 
-LangtonField initializeFieldWithMap(int rows, int cols, const char* mapFileName);
+LangtonField initializeFieldWithMap( const char* mapFileName);
 
 void loadMapFromFile(LangtonField* langField,const char* mapFileName);
+void delay(int number_of_seconds);
+
 int checkMap(FILE* file,int* cols,int* rows);
 #endif
