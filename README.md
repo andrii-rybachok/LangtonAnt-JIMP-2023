@@ -11,7 +11,7 @@ Aby skorzystać z programu, należy uruchomić go z linii poleceń, podając odp
 •	-d: Kierunek początkowy mrówki (0 - dół, 1 - lewo, 2 - góra, 3 - prawo).
 •	-b: Procent czarnych komórek na planszy.
 •	-p: Prefix nazw plików wyjściowych.
-•	-m: Prefix nazw plików mapy (opcjonalne).
+•	-m: Nazwa pliku dla wyczytania początkowej mapy(opcjonalnie).
 
 Idee Działania Mrówki Langtona:
 Mrówka chodzi po dwuwymiarowej siatce. Może poruszać się w jednym z 4-ech kierunków (góra, dół, lewo, prawo), zgodnie z następującymi zasadami:
@@ -71,6 +71,8 @@ Zapisuje stan planszy do pliku.
 Wczytuje mapę planszy z pliku do struktury LangtonField.
 •	initializeFieldWithMap (langtonField.h):
 Inicjalizuje planszę z mapy wczytanej z pliku.
+•	checkMap (langtonField.h):
+służy do analizy zawartości pliku.
 
 Przykładowe Działanie Programu:
 Uruchomienie programu z przykładowymi parametrami:
